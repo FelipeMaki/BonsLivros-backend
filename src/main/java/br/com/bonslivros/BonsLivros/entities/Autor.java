@@ -28,7 +28,8 @@ public class Autor implements Serializable {
   @Column(name = "cpf")
   String cpf;
 
-  public Autor() {
+  public Autor() {   // construtor
+    
   }
   
   public Autor(String nome, String email, String senha, String cpf) {
