@@ -80,11 +80,30 @@ public class LivrariaService {
         return repository.findByAutorId(autorId);
     }
 
+    // Inserir novo autor
     public Autor insertAutor(Autor autor) {
         String cpf = autor.getCpf();
         if (validarcpf.validarCpf(cpf) == false) {
             throw new RuntimeException("CPF inválido: " + cpf);
         }
         return autorRepository.save(autor);
+    }
+    // lsitar todos os autores
+    public List<Autor> findAllAutores() {
+        return autorRepository.findAll();
+    }
+
+    // Atualizar autor existente
+    public Autor updateAutor(Autor autor) {
+        // Verifica se existe
+        findById(autor.getId());
+        return autorRepository.save(autor);
+    }
+
+    // Excluir autor
+    public void deleteAutor(Integer id) {
+        // Verifica se existe
+        findById(id);
+        autorRepository.deleteById(id);
     }
 }

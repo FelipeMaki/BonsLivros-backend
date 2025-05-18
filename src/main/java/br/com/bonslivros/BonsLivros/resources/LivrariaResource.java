@@ -11,6 +11,13 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
+
+
 
 @RestController
 @RequestMapping("/livraria")
@@ -62,6 +69,29 @@ public class LivrariaResource {
    
         return ResponseEntity.created(uri).body(autor);
     }
+    
+    // Buscar autor
+    @GetMapping(value = "/autor")
+    public ResponseEntity<List<Autor>> findAllAutores() {
+        List<Autor> autores = service.findAllAutores();
+        return ResponseEntity.ok().body(autores);
+    }
+
+    // Atualizar autor por ID
+    @PutMapping("autor/{id}")
+    public ResponseEntity<Autor> updateAutor(@PathVariable Integer id, @RequestBody Autor autor) {
+        autor.setId(id); // Garante que o ID é o correto
+        Autor autorAtualizado = service.updateAutor(autor);
+        return ResponseEntity.ok().body(autorAtualizado);
+    }
+
+    // Excluir autor
+    @DeleteMapping(value = "/autor/{id}")
+    public ResponseEntity<Void> deleteAutor(@PathVariable Integer id) {
+        service.deleteAutor(id);
+        return ResponseEntity.noContent().build();
+    }
+    
 
     // Atualizar livro existente
     @PutMapping(value = "/{id}")
