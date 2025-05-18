@@ -39,6 +39,14 @@ public class Autor implements Serializable {
     this.cpf = cpf;
   }
 
+  public Integer getId() {
+    return id;
+  }
+
+  public void setId(Integer id) {
+    this.id = id != null ? id : 0;
+  }
+
   public String getNome() {
     return nome;
   }

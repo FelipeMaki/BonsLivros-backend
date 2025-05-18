@@ -2,34 +2,39 @@ package br.com.bonslivros.BonsLivros.services;
 
 public class validarcpf {
     // Função para validar o CPF
-    public static boolean validarCpf(String cpfLido) {
-        String cpf = cpfLido.substring(0, 11);
+    public static boolean validarCpf(String cpf) {
+    // Remove caracteres não numéricos
+    cpf = cpf.replaceAll("[^\\d]", "");
 
-        // Validando o primeiro digito
-        int mult = 10;
-        validarDigitoCpf(cpf, mult);
-
-        // Validando o segundo digito
-        mult = 11;
-        validarDigitoCpf(cpf, mult);
-
-        return cpfLido.equals(cpf);
+    // Verifica se tem 11 dígitos ou se são todos iguais
+    if (cpf.length() != 11 || cpf.chars().distinct().count() == 1) {
+        return false;
     }
 
-    // Função para validar os digitos do CPF
-    private static String validarDigitoCpf(String cpf, int mult) {
+    try {
+        // Calcula o 1º dígito verificador
         int soma = 0;
-
-        for (int i = 0; i < cpf.length(); i++) {
-            if (mult >= 2) {
-                soma += Integer.parseInt(""+cpf.charAt(i)) * mult--;
-            }
+        for (int i = 0; i < 9; i++) {
+            soma += Character.getNumericValue(cpf.charAt(i)) * (10 - i);
         }
 
-        int resto = soma % 11;
-        int digito = (resto < 2 ? 0 : 11 - resto);
-        cpf += digito;
+        int digito1 = (soma % 11 < 2) ? 0 : 11 - (soma % 11);
 
-        return (cpf);
+        // Calcula o 2º dígito verificador
+        soma = 0;
+        for (int i = 0; i < 10; i++) {
+            soma += Character.getNumericValue(cpf.charAt(i)) * (11 - i);
+        }
+
+        int digito2 = (soma % 11 < 2) ? 0 : 11 - (soma % 11);
+
+        // Verifica se os dígitos calculados batem com os fornecidos
+        return cpf.charAt(9) == Character.forDigit(digito1, 10) &&
+               cpf.charAt(10) == Character.forDigit(digito2, 10);
+
+    } catch (Exception e) {
+        return false;
     }
+}
+
 }

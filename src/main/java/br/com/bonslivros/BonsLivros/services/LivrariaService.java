@@ -1,8 +1,11 @@
 package br.com.bonslivros.BonsLivros.services;
 
+import br.com.bonslivros.BonsLivros.entities.Autor;
 import br.com.bonslivros.BonsLivros.entities.Livro;
+import br.com.bonslivros.BonsLivros.repositories.AutorRepository;
 import br.com.bonslivros.BonsLivros.repositories.LivroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +16,9 @@ public class LivrariaService {
 
     @Autowired
     private LivroRepository repository;
+
+    @Autowired
+    private AutorRepository autorRepository;
 
     // Buscar por ID
     public Livro findById(Integer id) {
@@ -27,8 +33,26 @@ public class LivrariaService {
 
     // Inserir novo
     public Livro insert(Livro livro) {
-        // Garante que é um novo livro (ID nulo)
-        livro.setId(null);
+        Autor autor = livro.getAutor();
+
+        if (autor.getId() != null) {
+            Optional<Autor> autorExistente = autorRepository.findById(autor.getId());
+            if (autorExistente.isPresent()) {
+                autor = autorExistente.get();
+            } else {
+                autor.setId(null); // anula o ID pra forçar um novo insert
+                String cpf = autor.getCpf();
+                if (validarcpf.validarCpf(cpf) == false) {
+                        throw new RuntimeException("CPF inválido: " + cpf);
+                }
+                autor = autorRepository.save(autor);
+            }
+        } else {
+            autor = autorRepository.save(autor);
+        }
+
+        livro.setAutor(autor);
+
         return repository.save(livro);
     }
 
