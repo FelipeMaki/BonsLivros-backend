@@ -78,7 +78,7 @@ public class LivrariaResource {
     }
 
     // Atualizar autor por ID
-    @PutMapping("autor/{id}")
+    @PutMapping("/autor/{id}")
     public ResponseEntity<Autor> updateAutor(@PathVariable Integer id, @RequestBody Autor autor) {
         autor.setId(id); // Garante que o ID é o correto
         Autor autorAtualizado = service.updateAutor(autor);
