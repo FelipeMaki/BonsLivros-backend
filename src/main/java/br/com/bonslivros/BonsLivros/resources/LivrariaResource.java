@@ -1,5 +1,6 @@
 package br.com.bonslivros.BonsLivros.resources;
 
+import br.com.bonslivros.BonsLivros.entities.Autor;
 import br.com.bonslivros.BonsLivros.entities.Livro;
 import br.com.bonslivros.BonsLivros.services.LivrariaService;
 
@@ -45,6 +46,21 @@ public class LivrariaResource {
                 .toUri();
    
         return ResponseEntity.created(uri).body(livro);
+    }
+
+    // adicionar autor
+    @PostMapping(value = "/autor")
+    public ResponseEntity<Autor> insertAutor(@RequestBody Autor autor) {
+        autor = service.insertAutor(autor);
+        
+        // Cria URI para o novo recurso
+        URI uri = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(autor.getId())
+                .toUri();
+   
+        return ResponseEntity.created(uri).body(autor);
     }
 
     // Atualizar livro existente

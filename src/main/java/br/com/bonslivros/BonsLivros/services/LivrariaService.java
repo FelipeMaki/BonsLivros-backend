@@ -79,4 +79,12 @@ public class LivrariaService {
     public List<Livro> findByAutorId(Integer autorId) {
         return repository.findByAutorId(autorId);
     }
+
+    public Autor insertAutor(Autor autor) {
+        String cpf = autor.getCpf();
+        if (validarcpf.validarCpf(cpf) == false) {
+            throw new RuntimeException("CPF inválido: " + cpf);
+        }
+        return autorRepository.save(autor);
+    }
 }
