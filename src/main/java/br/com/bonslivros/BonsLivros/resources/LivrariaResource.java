@@ -2,6 +2,7 @@ package br.com.bonslivros.BonsLivros.resources;
 
 import br.com.bonslivros.BonsLivros.entities.Autor;
 import br.com.bonslivros.BonsLivros.entities.Livro;
+import br.com.bonslivros.BonsLivros.entities.LoginDTO;
 import br.com.bonslivros.BonsLivros.services.LivrariaService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -119,8 +120,12 @@ public class LivrariaResource {
         return ResponseEntity.ok().body(livros);
     }
 
-    @GetMapping("/login")
-    public ResponseEntity<Autor> login(@RequestParam String email, @RequestParam String senha) {
+    @PostMapping("/login")
+    public ResponseEntity<Autor> login(@RequestBody LoginDTO loginDTO) {
+
+        String email = loginDTO.getEmail();
+        String senha = loginDTO.getSenha();
+
         Autor user = service.login(email, senha);
         return ResponseEntity.ok().body(user);
     }
