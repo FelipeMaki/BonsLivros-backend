@@ -5,17 +5,14 @@ import br.com.bonslivros.BonsLivros.entities.Livro;
 import br.com.bonslivros.BonsLivros.services.LivrariaService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PathVariable;
+
 
 
 
@@ -121,4 +118,11 @@ public class LivrariaResource {
         List<Livro> livros = service.findByAutorId(autorId);
         return ResponseEntity.ok().body(livros);
     }
+
+    @GetMapping("/login")
+    public ResponseEntity<Autor> login(@RequestParam String email, @RequestParam String senha) {
+        Autor user = service.login(email, senha);
+        return ResponseEntity.ok().body(user);
+    }
+    
 }

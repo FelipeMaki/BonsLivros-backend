@@ -106,4 +106,15 @@ public class LivrariaService {
         findById(id);
         autorRepository.deleteById(id);
     }
+
+    // login autor
+    public Autor login(String email, String senha) {
+        Autor autor = autorRepository.findByEmailAndSenha(email, senha);
+
+        if (autor == null) {
+            throw new RuntimeException("Email ou senha inválidos");
+        }
+        
+        return autor;
+    }
 }
